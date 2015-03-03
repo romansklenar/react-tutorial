@@ -29,9 +29,12 @@
 
       var CommentList = React.createClass({
         render: function() {
-          var commentNodes = this.props.data.map(function (comment) {
+          var commentNodes = this.props.data.map(function(comment, index) {
             return (
-              <Comment author={comment.author}>
+              // `key` is a React-specific concept and is not mandatory for the
+              // purpose of this tutorial. if you're curious, see more here:
+              // http://facebook.github.io/react/docs/multiple-components.html#dynamic-children
+              <Comment author={comment.author} key={index}>
                 {comment.text}
               </Comment>
             );
@@ -82,19 +85,22 @@
         },
         handleCommentSubmit: function(comment) {
           var comments = this.state.data;
-          var newComments = comments.concat([comment]);
-          this.setState({data: newComments});
-          $.ajax({
-            url: this.props.url,
-            dataType: 'json',
-            type: 'POST',
-            data: comment,
-            success: function(data) {
-              this.setState({data: data});
-            }.bind(this),
-            error: function(xhr, status, err) {
-              console.error(this.props.url, status, err.toString());
-            }.bind(this)
+          comments.push(comment);
+          this.setState({data: comments}, function() {
+            // `setState` accepts a callback. To avoid (improbable) race condition,
+            // `we'll send the ajax request right after we optimistically set the new state.
+            $.ajax({
+              url: this.props.url,
+              dataType: 'json',
+              type: 'POST',
+              data: comment,
+              success: function(data) {
+                this.setState({data: data});
+              }.bind(this),
+              error: function(xhr, status, err) {
+                console.error(this.props.url, status, err.toString());
+              }.bind(this)
+            });
           });
         },
         getInitialState: function() {
