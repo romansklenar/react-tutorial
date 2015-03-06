@@ -12,6 +12,7 @@ gem 'turbolinks'
 gem 'uglifier', '>= 1.3.0'
 gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
+gem 'active_model_serializers'
 
 
 group :development, :test do
