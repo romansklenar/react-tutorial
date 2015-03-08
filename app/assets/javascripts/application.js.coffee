@@ -15,4 +15,5 @@
 #= require turbolinks
 #= require react
 #= require react_ujs
+#= require showdown
 #= require_tree .
