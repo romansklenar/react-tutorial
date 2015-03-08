@@ -5,6 +5,7 @@ var CommentBox = React.createClass({
   },
   componentDidMount: function () {
     this.loadCommentsFromServer();
+    setInterval(this.loadCommentsFromServer, this.props.pollInterval);
   },
   loadCommentsFromServer: function () {
     $.ajax({
