@@ -8,6 +8,6 @@ var Comment = React.createClass({
         </h2>
           {this.props.comment}
       </div>
-      );
+    );
   }
 });
