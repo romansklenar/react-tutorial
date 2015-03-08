@@ -23,8 +23,9 @@ var CommentBox = React.createClass({
     var comments = this.state.comments;
     var newComments = comments.concat([comment]);
     this.setState({comments: newComments});
+    url = '/comments'
     $.ajax({
-      url: this.props.url,
+      url: url,
       dataType: 'json',
       type: 'POST',
       data: {"comment": comment},
@@ -32,7 +33,7 @@ var CommentBox = React.createClass({
         this.loadCommentsFromServer();
       }.bind(this),
       error: function(xhr, status, err) {
-        console.error(this.props.url, status, err.toString());
+        console.error(url, status, err.toString());
       }.bind(this)
     });
   },
